@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "voi6fdO8Hi8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\user\\source\\repos\\ReservationService\\ReservationService.Persistence\\ReservationService.Persistence.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

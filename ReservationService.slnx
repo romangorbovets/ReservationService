@@ -1,3 +1,16 @@
 <Solution>
-  <Project Path="ReservationService/ReservationService.csproj" />
+  <Project Path="ReservationService.Application/ReservationService.Application.csproj">
+    <BuildDependency Project="ReservationService.Domain/ReservationService.Domain.csproj" />
+  </Project>
+  <Project Path="ReservationService.Domain/ReservationService.Domain.csproj" />
+  <Project Path="ReservationService.Infrastructure/ReservationService.Infrastructure.csproj">
+    <BuildDependency Project="ReservationService.Application/ReservationService.Application.csproj" />
+  </Project>
+  <Project Path="ReservationService.Persistence/ReservationService.Persistence.csproj">
+    <BuildDependency Project="ReservationService.Application/ReservationService.Application.csproj" />
+  </Project>
+  <Project Path="ReservationService/ReservationService.csproj">
+    <BuildDependency Project="ReservationService.Infrastructure/ReservationService.Infrastructure.csproj" />
+    <BuildDependency Project="ReservationService.Persistence/ReservationService.Persistence.csproj" />
+  </Project>
 </Solution>
