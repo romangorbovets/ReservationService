@@ -12,8 +12,6 @@ public class Restaurant : Entity
     public TimeSpan? OpeningTime { get; set; }
     public TimeSpan? ClosingTime { get; set; }
     public bool IsActive { get; set; } = true;
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
     
     public ICollection<ReservationService.Domain.AggregateRoots.Reservation> Reservations { get; set; } = new List<ReservationService.Domain.AggregateRoots.Reservation>();
     public ICollection<Table> Tables { get; set; } = new List<Table>();

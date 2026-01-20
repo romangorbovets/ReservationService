@@ -2,11 +2,9 @@ using System.Text;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ReservationService.Application;
 using ReservationService.Application.Common.Behaviors;
-using ReservationService.Application.Common.Interfaces;
-using ReservationService.Application.Common.Services;
 using ReservationService.Application.Common.Settings;
 using ReservationService.Persistence;
 using System.Reflection;
@@ -17,20 +15,14 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") 
-        ?? "Host=localhost;Database=ReservationService;Username=postgres;Password=postgres"));
-
+builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 if (jwtSettings == null)
 {
     throw new InvalidOperationException("JwtSettings configuration is missing");
 }
-
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddAuthentication(options =>
 {

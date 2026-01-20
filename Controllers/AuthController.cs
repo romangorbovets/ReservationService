@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterCommand command)
     {
         var result = await _mediator.Send(command);
-        return Ok(result);
+        return StatusCode(201, result);
     }
 
     [HttpPost("login")]
@@ -30,6 +30,7 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 }
+
 
 
 

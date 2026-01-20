@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ReservationService.Application.Common.Interfaces;
 using ReservationService.Application.Common.Settings;
+using ReservationService.Domain.Enums;
 
 namespace ReservationService.Application.Common.Services;
 
@@ -17,13 +18,14 @@ public class JwtTokenService : IJwtTokenService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateToken(Guid userId, string email)
+    public string GenerateToken(Guid userId, string email, Role role)
     {
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
@@ -40,7 +42,3 @@ public class JwtTokenService : IJwtTokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
-
-
-
-

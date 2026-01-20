@@ -9,8 +9,6 @@ public class Customer : Entity
     public string LastName { get; private set; } = string.Empty;
     public Address? Address { get; private set; }
     public ContactInfo ContactInfo { get; private set; } = null!;
-    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; private set; }
 
     private readonly List<Reservation> _reservations = new();
     public IReadOnlyCollection<Reservation> Reservations => _reservations.AsReadOnly();

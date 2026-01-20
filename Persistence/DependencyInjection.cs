@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using ReservationService.Domain.Repositories;
+using ReservationService.Persistence.Interceptors;
+using ReservationService.Persistence.Repositories;
 using ReservationService.Persistence.Settings;
 
 namespace ReservationService.Persistence;
@@ -12,16 +15,21 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<ConnectionStrings>(
-            configuration.GetSection(ConnectionStrings.SectionName));
+        services.Configure<DatabaseOptions>(
+            configuration.GetSection(nameof(DatabaseOptions)));
+
+        services.AddSingleton<UpdateTimestampsInterceptor>();
 
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
-            var connectionStrings = serviceProvider.GetRequiredService<IOptions<ConnectionStrings>>().Value;
-            options.UseNpgsql(connectionStrings.DefaultConnection);
+            var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
+            options.UseNpgsql(databaseOptions.ConnectionString)
+                .AddInterceptors(interceptor);
         });
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
 }
-

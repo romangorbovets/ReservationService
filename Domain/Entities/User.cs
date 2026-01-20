@@ -1,3 +1,5 @@
+using ReservationService.Domain.Enums;
+
 namespace ReservationService.Domain.Entities;
 
 public class User : Entity
@@ -6,8 +8,7 @@ public class User : Entity
     public string PasswordHash { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public Role Role { get; set; } = Role.Guest;
 }
 
 

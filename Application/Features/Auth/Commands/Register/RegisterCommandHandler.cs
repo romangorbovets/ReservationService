@@ -1,60 +1,47 @@
-using System.Security.Cryptography;
-using System.Text;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ReservationService.Application.Common.Services;
 using ReservationService.Domain.Entities;
-using ReservationService.Persistence;
+using ReservationService.Domain.Repositories;
 
 namespace ReservationService.Application.Features.Auth.Commands.Register;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUserRepository _userRepository;
 
-    public RegisterCommandHandler(ApplicationDbContext context)
+    public RegisterCommandHandler(IUserRepository userRepository)
     {
-        _context = context;
+        _userRepository = userRepository;
     }
 
     public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
-
-        if (existingUser != null)
-        {
-            throw new InvalidOperationException("User with this email already exists");
-        }
-
         var user = new User
         {
-            Id = Guid.NewGuid(),
             Email = request.Email,
-            PasswordHash = HashPassword(request.Password),
+            PasswordHash = PasswordHasher.HashPassword(request.Password),
             FirstName = request.FirstName,
-            LastName = request.LastName,
-            CreatedAt = DateTime.UtcNow
+            LastName = request.LastName
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return new RegisterResponse
+        try
         {
-            UserId = user.Id,
-            Email = user.Email,
-            Message = "User registered successfully"
-        };
+            await _userRepository.AddAsync(user, cancellationToken);
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            throw new InvalidOperationException("User with this email already exists", ex);
+        }
+
+        return new RegisterResponse("User registered successfully");
     }
 
-    private static string HashPassword(string password)
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
     {
-        using var sha256 = SHA256.Create();
-        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return Convert.ToBase64String(hashedBytes);
+        var message = ex.InnerException?.Message ?? string.Empty;
+        return message.Contains("duplicate key", StringComparison.OrdinalIgnoreCase) ||
+               message.Contains("unique constraint", StringComparison.OrdinalIgnoreCase) ||
+               message.Contains("violates unique constraint", StringComparison.OrdinalIgnoreCase);
     }
 }
-
-
-
-

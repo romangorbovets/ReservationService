@@ -18,8 +18,6 @@ public class Reservation : AggregateRoot
     public AutoCancellationSettings AutoCancellationSettings { get; private set; } = null!;
     public string? SpecialRequests { get; private set; }
     public string? Notes { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
     public DateTime? ConfirmedAt { get; private set; }
     public DateTime? CancelledAt { get; private set; }
     public string? CancellationReason { get; private set; }
@@ -47,7 +45,6 @@ public class Reservation : AggregateRoot
         AutoCancellationSettings = autoCancellationSettings ?? new AutoCancellationSettings();
         SpecialRequests = specialRequests;
         Status = ReservationStatus.Pending;
-        CreatedAt = DateTime.UtcNow;
     }
 }
 

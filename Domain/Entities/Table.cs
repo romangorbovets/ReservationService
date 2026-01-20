@@ -8,8 +8,6 @@ public class Table : Entity
     public int Capacity { get; set; }
     public string? Location { get; set; }
     public bool IsActive { get; set; } = true;
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
     
     public ICollection<ReservationService.Domain.AggregateRoots.Reservation> Reservations { get; set; } = new List<ReservationService.Domain.AggregateRoots.Reservation>();
 }
