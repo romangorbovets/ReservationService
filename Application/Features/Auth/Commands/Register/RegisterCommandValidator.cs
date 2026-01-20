@@ -26,3 +26,4 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 
 
 
+
