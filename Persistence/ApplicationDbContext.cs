@@ -4,9 +4,6 @@ using ReservationService.Domain.Entities;
 
 namespace ReservationService.Persistence;
 
-/// <summary>
-/// Контекст базы данных приложения
-/// </summary>
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -16,15 +13,17 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<Customer> Customers => Set<Customer>();
-    public DbSet<Table> Tables => Set<Table>();
     public DbSet<Restaurant> Restaurants => Set<Restaurant>();
+    public DbSet<Table> Tables => Set<Table>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Применяем конфигурации из текущей сборки
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }
+
 
