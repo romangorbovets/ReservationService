@@ -5,6 +5,7 @@ obj/
 *.exe
 *.pdb
 *.cache
+*.cache.json
 *.user
 
 ## Visual Studio

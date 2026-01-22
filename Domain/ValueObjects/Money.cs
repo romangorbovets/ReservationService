@@ -11,7 +11,3 @@ public class Money : ValueObject
         yield return Currency;
     }
 }
-
-
-
-

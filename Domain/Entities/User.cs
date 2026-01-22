@@ -10,6 +10,3 @@ public class User : Entity
     public string LastName { get; set; } = string.Empty;
     public Role Role { get; set; } = Role.Guest;
 }
-
-
-

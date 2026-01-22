@@ -16,4 +16,3 @@ public class Restaurant : Entity
     public ICollection<ReservationService.Domain.AggregateRoots.Reservation> Reservations { get; set; } = new List<ReservationService.Domain.AggregateRoots.Reservation>();
     public ICollection<Table> Tables { get; set; } = new List<Table>();
 }
-

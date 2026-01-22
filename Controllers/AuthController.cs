@@ -30,8 +30,3 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 }
-
-
-
-
-

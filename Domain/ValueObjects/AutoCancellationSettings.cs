@@ -11,7 +11,3 @@ public class AutoCancellationSettings : ValueObject
         yield return CancellationTimeout ?? TimeSpan.Zero;
     }
 }
-
-
-
-

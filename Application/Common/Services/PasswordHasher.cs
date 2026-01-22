@@ -12,4 +12,3 @@ public static class PasswordHasher
         return Convert.ToBase64String(hashedBytes);
     }
 }
-

@@ -11,7 +11,3 @@ public class TimeRange : ValueObject
         yield return EndTime;
     }
 }
-
-
-
-

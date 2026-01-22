@@ -11,4 +11,3 @@ public abstract class DomainEvent
         OccurredOn = DateTime.UtcNow;
     }
 }
-

@@ -33,11 +33,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
         var token = _jwtTokenService.GenerateToken(user.Id, user.Email, user.Role);
 
-        return new LoginResponse
-        {
-            Token = token,
-            UserId = user.Id,
-            Email = user.Email
-        };
+        return new LoginResponse(token, user.Id, user.Email);
     }
 }

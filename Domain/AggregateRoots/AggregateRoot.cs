@@ -24,4 +24,3 @@ public abstract class AggregateRoot : Entity
         _domainEvents.Clear();
     }
 }
-

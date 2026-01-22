@@ -17,7 +17,3 @@ public class Address : ValueObject
         yield return Country;
     }
 }
-
-
-
-

@@ -11,7 +11,3 @@ public class Table : Entity
     
     public ICollection<ReservationService.Domain.AggregateRoots.Reservation> Reservations { get; set; } = new List<ReservationService.Domain.AggregateRoots.Reservation>();
 }
-
-
-
-

@@ -11,7 +11,3 @@ public class ContactInfo : ValueObject
         yield return PhoneNumber ?? string.Empty;
     }
 }
-
-
-
-

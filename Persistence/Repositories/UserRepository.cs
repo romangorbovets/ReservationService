@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ReservationService.Domain.Common.Exceptions;
 using ReservationService.Domain.Entities;
 using ReservationService.Domain.Repositories;
 
@@ -21,8 +22,23 @@ public class UserRepository : IUserRepository
 
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken = default)
     {
-        await _context.Users.AddAsync(user, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
-        return user;
+        try
+        {
+            await _context.Users.AddAsync(user, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return user;
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            throw new DuplicateEntityException("Duplicate entity", ex);
+        }
+    }
+
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+    {
+        var message = ex.InnerException?.Message ?? string.Empty;
+        return message.Contains("duplicate key", StringComparison.OrdinalIgnoreCase) ||
+               message.Contains("unique constraint", StringComparison.OrdinalIgnoreCase) ||
+               message.Contains("violates unique constraint", StringComparison.OrdinalIgnoreCase);
     }
 }

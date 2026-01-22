@@ -47,7 +47,3 @@ public class Reservation : AggregateRoot
         Status = ReservationStatus.Pending;
     }
 }
-
-
-
-

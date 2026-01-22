@@ -46,4 +46,3 @@ public abstract class ValueObject
         return NotEqualOperator(left, right);
     }
 }
-

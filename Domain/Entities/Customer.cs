@@ -39,4 +39,3 @@ public class Customer : Entity
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
     }
 }
-

@@ -1,6 +1,6 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using ReservationService.Application.Common.Services;
+using ReservationService.Domain.Common.Exceptions;
 using ReservationService.Domain.Entities;
 using ReservationService.Domain.Repositories;
 
@@ -29,19 +29,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
         {
             await _userRepository.AddAsync(user, cancellationToken);
         }
-        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        catch (DuplicateEntityException)
         {
-            throw new InvalidOperationException("User with this email already exists", ex);
+            throw new InvalidOperationException("Registration failed");
         }
 
         return new RegisterResponse("User registered successfully");
-    }
-
-    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
-    {
-        var message = ex.InnerException?.Message ?? string.Empty;
-        return message.Contains("duplicate key", StringComparison.OrdinalIgnoreCase) ||
-               message.Contains("unique constraint", StringComparison.OrdinalIgnoreCase) ||
-               message.Contains("violates unique constraint", StringComparison.OrdinalIgnoreCase);
     }
 }
