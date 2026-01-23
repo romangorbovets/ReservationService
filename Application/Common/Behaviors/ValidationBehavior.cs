@@ -46,4 +46,3 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         return await next();
     }
 }
-
