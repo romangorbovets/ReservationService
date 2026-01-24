@@ -1,0 +1,37 @@
+## .NET
+bin/
+obj/
+obj/Debug/net10.0/rpswa.dswa.cache.json
+*.dll
+*.exe
+*.pdb
+*.cache
+*.cache.json
+*.user
+
+## Visual Studio
+.vs/
+*.slnx
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio cache/options directory
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates

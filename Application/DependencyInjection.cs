@@ -1,28 +1,21 @@
-using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReservationService.Application.Common.Interfaces;
+using ReservationService.Application.Common.Services;
+using ReservationService.Application.Common.Settings;
 
 namespace ReservationService.Application;
 
-/// <summary>
-/// Методы расширения для регистрации сервисов Application слоя
-/// </summary>
 public static class DependencyInjection
 {
-    /// <summary>
-    /// Регистрирует сервисы Application слоя
-    /// </summary>
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
-        
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<ICommandSender, CommandSender>();
 
         return services;
     }
 }
-
-
-
-
-

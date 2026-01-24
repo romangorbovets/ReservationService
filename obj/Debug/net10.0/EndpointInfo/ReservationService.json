@@ -13,26 +13,26 @@
     }
   ],
   "paths": {
-    "/api/Reservations": {
+    "/api/Auth/register": {
       "post": {
         "tags": [
-          "Reservations"
+          "Auth"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReservationCommand"
+                "$ref": "#/components/schemas/RegisterCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReservationCommand"
+                "$ref": "#/components/schemas/RegisterCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReservationCommand"
+                "$ref": "#/components/schemas/RegisterCommand"
               }
             }
           },
@@ -44,82 +44,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/RegisterResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/RegisterResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Reservations"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tableId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "restaurantId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReservationDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReservationDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReservationDto"
-                  }
+                  "$ref": "#/components/schemas/RegisterResponse"
                 }
               }
             }
@@ -127,65 +62,51 @@
         }
       }
     },
-    "/api/Reservations/{id}": {
-      "get": {
-        "tags": [
-          "Reservations"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReservationDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReservationDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReservationDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Reservations/{id}/confirm": {
+    "/api/Auth/login": {
       "post": {
         "tags": [
-          "Reservations"
+          "Auth"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginCommand"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -232,124 +153,66 @@
   },
   "components": {
     "schemas": {
-      "CreateReservationCommand": {
+      "LoginCommand": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
-          "customerId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tableId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "restaurantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "numberOfGuests": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "totalPriceAmount": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
-            "type": [
-              "number",
-              "string"
-            ],
-            "format": "double"
-          },
-          "totalPriceCurrency": {
+          "email": {
             "type": "string"
           },
-          "autoCancellationEnabled": {
-            "type": "boolean"
-          },
-          "autoCancellationTimeout": {
-            "pattern": "^-?(\\d+\\.)?\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?$",
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "specialRequests": {
-            "type": [
-              "null",
-              "string"
-            ]
+          "password": {
+            "type": "string"
           }
         }
       },
-      "ReservationDto": {
+      "LoginResponse": {
+        "required": [
+          "token",
+          "userId",
+          "email"
+        ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "customerId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tableId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "restaurantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "numberOfGuests": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "status": {
+          "token": {
             "type": "string"
           },
-          "totalPriceAmount": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
-            "type": [
-              "number",
-              "string"
-            ],
-            "format": "double"
+          "userId": {
+            "type": "string",
+            "format": "uuid"
           },
-          "totalPriceCurrency": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
             "type": "string"
           },
-          "specialRequests": {
-            "type": [
-              "null",
-              "string"
-            ]
+          "password": {
+            "type": "string"
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterResponse": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -388,7 +251,7 @@
   },
   "tags": [
     {
-      "name": "Reservations"
+      "name": "Auth"
     },
     {
       "name": "WeatherForecast"

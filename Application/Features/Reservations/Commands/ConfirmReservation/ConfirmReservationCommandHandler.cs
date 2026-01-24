@@ -1,32 +1,31 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using ReservationService.Persistence;
+using ReservationService.Application.Common.Interfaces;
+using ReservationService.Domain.Repositories;
 
 namespace ReservationService.Application.Features.Reservations.Commands.ConfirmReservation;
 
-/// <summary>
-/// Обработчик команды подтверждения резервации
-/// </summary>
-public class ConfirmReservationCommandHandler : IRequestHandler<ConfirmReservationCommand>
+public class ConfirmReservationCommandHandler : ICommandHandler<ConfirmReservationCommand>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IReservationRepository _reservationRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ConfirmReservationCommandHandler(ApplicationDbContext context)
+    public ConfirmReservationCommandHandler(
+        IReservationRepository reservationRepository,
+        IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _reservationRepository = reservationRepository;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(ConfirmReservationCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ConfirmReservationCommand command, CancellationToken cancellationToken = default)
     {
-        var reservation = await _context.Reservations
-            .FirstOrDefaultAsync(r => r.Id == request.ReservationId, cancellationToken);
+        var reservation = await _reservationRepository.GetByIdAsync(command.ReservationId, cancellationToken);
 
-        if (reservation == null)
-            throw new ArgumentException($"Reservation with id {request.ReservationId} not found", nameof(request.ReservationId));
+        if (reservation is null)
+        {
+            throw new InvalidOperationException("Reservation not found");
+        }
 
-        reservation.Confirm();
-        await _context.SaveChangesAsync(cancellationToken);
+        await _reservationRepository.UpdateAsync(reservation, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
-
-
