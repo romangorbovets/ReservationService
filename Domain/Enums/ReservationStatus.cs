@@ -7,8 +7,3 @@ public enum ReservationStatus
     Cancelled = 2,
     Completed = 3
 }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> СQRS

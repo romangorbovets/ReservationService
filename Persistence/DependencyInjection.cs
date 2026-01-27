@@ -29,11 +29,6 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IUserRepository, UserRepository>();
-<<<<<<< HEAD
-=======
-        services.AddScoped<IReservationRepository, ReservationRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
->>>>>>> СQRS
 
         return services;
     }

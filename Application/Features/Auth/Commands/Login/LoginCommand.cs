@@ -1,5 +1,5 @@
-using ReservationService.Application.Common.Interfaces;
+using MediatR;
 
 namespace ReservationService.Application.Features.Auth.Commands.Login;
 
-public record LoginCommand(string Email, string Password) : ICommand<LoginResponse>;
+public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
