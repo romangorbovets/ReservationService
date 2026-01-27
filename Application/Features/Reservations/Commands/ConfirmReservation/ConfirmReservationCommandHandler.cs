@@ -29,3 +29,4 @@ public class ConfirmReservationCommandHandler : ICommandHandler<ConfirmReservati
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
+

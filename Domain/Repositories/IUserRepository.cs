@@ -8,3 +8,4 @@ public interface IUserRepository
     Task<User> AddAsync(User user, CancellationToken cancellationToken = default);
 }
 
+
