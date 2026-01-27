@@ -1,11 +1,10 @@
-using MediatR;
 using ReservationService.Application.Common.Interfaces;
 using ReservationService.Application.Common.Services;
 using ReservationService.Domain.Repositories;
 
 namespace ReservationService.Application.Features.Auth.Commands.Login;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IJwtTokenService _jwtTokenService;
@@ -16,16 +15,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         _jwtTokenService = jwtTokenService;
     }
 
-    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+        var user = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
 
-        if (user == null)
+        if (user is null)
         {
             throw new UnauthorizedAccessException("Invalid email or password");
         }
 
-        var passwordHash = PasswordHasher.HashPassword(request.Password);
+        var passwordHash = PasswordHasher.HashPassword(command.Password);
         if (user.PasswordHash != passwordHash)
         {
             throw new UnauthorizedAccessException("Invalid email or password");

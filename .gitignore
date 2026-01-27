@@ -1,12 +1,14 @@
 ## .NET
 bin/
+bin/Debug/net10.0/
 obj/
+obj/Debug/net10.0/rpswa.dswa.cache.json
+Debug/net10.0/
 *.dll
 *.exe
 *.pdb
 *.cache
 *.cache.json
-**/rpswa.dswa.cache.json
 *.user
 
 ## Visual Studio

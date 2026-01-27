@@ -1,5 +1,5 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ReservationService.Application.Common.Interfaces;
 using ReservationService.Application.Features.Auth.Commands.Login;
 using ReservationService.Application.Features.Auth.Commands.Register;
 
@@ -9,24 +9,24 @@ namespace ReservationService.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly ICommandSender _commandSender;
 
-    public AuthController(IMediator mediator)
+    public AuthController(ICommandSender commandSender)
     {
-        _mediator = mediator;
+        _commandSender = commandSender;
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _commandSender.Send(command);
         return StatusCode(201, result);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _commandSender.Send(command);
         return Ok(result);
     }
 }

@@ -12,14 +12,13 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-if (jwtSettings == null)
+if (jwtSettings is null)
 {
     throw new InvalidOperationException("JwtSettings configuration is missing");
 }
@@ -46,7 +45,11 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatR(cfg => 
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    cfg.RegisterServicesFromAssembly(typeof(Application.DependencyInjection).Assembly);
+});
 
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
