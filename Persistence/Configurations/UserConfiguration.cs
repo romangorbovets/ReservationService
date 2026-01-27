@@ -35,3 +35,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.UpdatedAt);
     }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> СQRS

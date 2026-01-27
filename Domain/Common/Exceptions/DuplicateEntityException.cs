@@ -10,3 +10,8 @@ public class DuplicateEntityException : Exception
     {
     }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> СQRS

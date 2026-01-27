@@ -22,7 +22,11 @@ public abstract class ValueObject
 
     public override bool Equals(object? obj)
     {
+<<<<<<< HEAD
         if (obj == null || obj.GetType() != GetType())
+=======
+        if (obj is null || obj.GetType() != GetType())
+>>>>>>> СQRS
             return false;
 
         var other = (ValueObject)obj;

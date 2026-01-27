@@ -25,3 +25,8 @@ public class ValidationException : Exception
         };
     }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> СQRS

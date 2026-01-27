@@ -23,3 +23,5 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .MaximumLength(100).WithMessage("Last name must not exceed 100 characters");
     }
 }
+
+

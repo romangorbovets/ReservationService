@@ -22,6 +22,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken = default)
     {
+<<<<<<< HEAD
         try
         {
             await _context.Users.AddAsync(user, cancellationToken);
@@ -32,6 +33,10 @@ public class UserRepository : IUserRepository
         {
             throw new DuplicateEntityException("Duplicate entity", ex);
         }
+=======
+        await _context.Users.AddAsync(user, cancellationToken);
+        return user;
+>>>>>>> СQRS
     }
 
     private static bool IsUniqueConstraintViolation(DbUpdateException ex)
