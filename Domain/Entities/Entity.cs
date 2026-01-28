@@ -24,11 +24,7 @@ public abstract class Entity
 
     public override bool Equals(object? obj)
     {
-<<<<<<< HEAD
-        if (obj == null || obj.GetType() != GetType())
-=======
         if (obj is null || obj.GetType() != GetType())
->>>>>>> СQRS
             return false;
 
         if (obj is not Entity other)

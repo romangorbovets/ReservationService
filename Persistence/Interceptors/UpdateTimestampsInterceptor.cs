@@ -23,11 +23,7 @@ public class UpdateTimestampsInterceptor : SaveChangesInterceptor
 
     private static void UpdateTimestamps(DbContext? context)
     {
-<<<<<<< HEAD
-        if (context == null) return;
-=======
         if (context is null) return;
->>>>>>> СQRS
 
         var entries = context.ChangeTracker
             .Entries<Entity>()
