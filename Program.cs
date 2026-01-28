@@ -48,7 +48,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddMediatR(cfg => 
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-    cfg.RegisterServicesFromAssembly(typeof(Application.DependencyInjection).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(ReservationService.Application.DependencyInjection).Assembly);
 });
 
 
