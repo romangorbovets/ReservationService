@@ -4,4 +4,8 @@ public enum Role
 {
     Guest = 0,
     Manager = 1
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main
