@@ -1,42 +1,37 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReservationService.Application.Common.Interfaces;
+using Microsoft.Extensions.Options;
 using ReservationService.Domain.Repositories;
+using ReservationService.Persistence.Interceptors;
 using ReservationService.Persistence.Repositories;
+using ReservationService.Persistence.Settings;
 
 namespace ReservationService.Persistence;
 
-/// <summary>
-/// Методы расширения для регистрации сервисов Persistence слоя
-/// </summary>
 public static class DependencyInjection
 {
-    /// <summary>
-    /// Регистрирует сервисы Persistence слоя
-    /// </summary>
     public static IServiceCollection AddPersistence(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Регистрация DbContext
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+        services.Configure<DatabaseOptions>(
+            configuration.GetSection(nameof(DatabaseOptions)));
 
-        // Регистрация UnitOfWork (Scoped - один экземпляр на HTTP-запрос)
+        services.AddSingleton<UpdateTimestampsInterceptor>();
+
+        services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
+        {
+            var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
+            options.UseNpgsql(databaseOptions.ConnectionString)
+                .AddInterceptors(interceptor);
+        });
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        // Регистрация репозиториев через UnitOfWork
-        // Репозитории создаются внутри UnitOfWork, но можно также зарегистрировать их напрямую, если нужно
-        // В данном случае репозитории доступны через UnitOfWork
 
         return services;
     }
 }
-
-
-
-
-
-
-

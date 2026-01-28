@@ -1,32 +1,33 @@
-using MediatR;
 using ReservationService.Application.Common.Interfaces;
+using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
 
 namespace ReservationService.Application.Features.Reservations.Commands.ConfirmReservation;
 
-/// <summary>
-/// Обработчик команды подтверждения резервации
-/// </summary>
-public class ConfirmReservationCommandHandler : IRequestHandler<ConfirmReservationCommand>
+public class ConfirmReservationCommandHandler : ICommandHandler<ConfirmReservationCommand>
 {
+    private readonly IReservationRepository _reservationRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ConfirmReservationCommandHandler(IUnitOfWork unitOfWork)
+    public ConfirmReservationCommandHandler(
+        IReservationRepository reservationRepository,
+        IUnitOfWork unitOfWork)
     {
+        _reservationRepository = reservationRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(ConfirmReservationCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ConfirmReservationCommand command, CancellationToken cancellationToken = default)
     {
-        var reservation = await _unitOfWork.Reservations.GetByIdAsync(request.ReservationId, cancellationToken);
+        var specification = new ReservationSpecification(command.ReservationId);
+        var reservation = await _reservationRepository.GetAsync(specification, cancellationToken);
 
-        if (reservation == null)
-            throw new ArgumentException($"Reservation with id {request.ReservationId} not found", nameof(request.ReservationId));
+        if (reservation is null)
+        {
+            throw new InvalidOperationException("Reservation not found");
+        }
 
-        reservation.Confirm();
-        _unitOfWork.Reservations.Update(reservation);
+        await _reservationRepository.UpdateAsync(reservation, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
-
-
-

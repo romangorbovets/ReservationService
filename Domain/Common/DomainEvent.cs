@@ -1,8 +1,5 @@
 namespace ReservationService.Domain.Common;
 
-/// <summary>
-/// Базовый класс для доменных событий
-/// </summary>
 public abstract class DomainEvent
 {
     public Guid Id { get; private set; }
@@ -14,10 +11,3 @@ public abstract class DomainEvent
         OccurredOn = DateTime.UtcNow;
     }
 }
-
-
-
-
-
-
-

@@ -1,56 +1,41 @@
+using ReservationService.Domain.AggregateRoots;
+using ReservationService.Domain.ValueObjects;
+
 namespace ReservationService.Domain.Entities;
 
-/// <summary>
-/// Сущность клиента
-/// </summary>
-public class Customer
+public class Customer : Entity
 {
-    public Guid Id { get; private set; }
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public ValueObjects.ContactInfo ContactInfo { get; private set; }
-    public ValueObjects.Address? Address { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public Address? Address { get; private set; }
+    public ContactInfo ContactInfo { get; private set; } = null!;
 
-    private readonly List<AggregateRoots.Reservation> _reservations = new();
-    public IReadOnlyCollection<AggregateRoots.Reservation> Reservations => _reservations.AsReadOnly();
+    private readonly List<Reservation> _reservations = new();
+    public IReadOnlyCollection<Reservation> Reservations => _reservations.AsReadOnly();
 
-    private Customer() { } // Для EF Core
+    private Customer() { }
 
-    public Customer(string firstName, string lastName, ValueObjects.ContactInfo contactInfo, ValueObjects.Address? address = null)
+    public Customer(string firstName, string lastName, ContactInfo contactInfo, Address? address = null)
     {
-        Id = Guid.NewGuid();
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
         ContactInfo = contactInfo ?? throw new ArgumentNullException(nameof(contactInfo));
         Address = address;
-        CreatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateContactInfo(ValueObjects.ContactInfo contactInfo)
+    public void UpdateContactInfo(ContactInfo contactInfo)
     {
         ContactInfo = contactInfo ?? throw new ArgumentNullException(nameof(contactInfo));
-        UpdatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateAddress(ValueObjects.Address? address)
+    public void UpdateAddress(Address? address)
     {
         Address = address;
-        UpdatedAt = DateTime.UtcNow;
     }
 
     public void UpdateName(string firstName, string lastName)
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
-        UpdatedAt = DateTime.UtcNow;
     }
 }
-
-
-
-
-
-
-
