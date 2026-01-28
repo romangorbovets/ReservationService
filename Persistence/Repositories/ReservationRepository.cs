@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReservationService.Domain.AggregateRoots;
 using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
 
 namespace ReservationService.Persistence.Repositories;
 
@@ -13,10 +14,11 @@ public class ReservationRepository : IReservationRepository
         _context = context;
     }
 
-    public async Task<Reservation?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Reservation?> GetAsync(ISpecification<Reservation> specification, CancellationToken cancellationToken = default)
     {
         return await _context.Reservations
-            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+            .Where(specification.Criteria)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<Reservation> AddAsync(Reservation reservation, CancellationToken cancellationToken = default)

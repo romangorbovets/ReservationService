@@ -1,5 +1,6 @@
 using ReservationService.Application.Common.Interfaces;
 using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
 
 namespace ReservationService.Application.Features.Reservations.Commands.ConfirmReservation;
 
@@ -18,7 +19,8 @@ public class ConfirmReservationCommandHandler : ICommandHandler<ConfirmReservati
 
     public async Task Handle(ConfirmReservationCommand command, CancellationToken cancellationToken = default)
     {
-        var reservation = await _reservationRepository.GetByIdAsync(command.ReservationId, cancellationToken);
+        var specification = new ReservationSpecification(command.ReservationId);
+        var reservation = await _reservationRepository.GetAsync(specification, cancellationToken);
 
         if (reservation is null)
         {

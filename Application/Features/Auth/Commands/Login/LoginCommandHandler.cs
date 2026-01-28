@@ -1,6 +1,7 @@
 using ReservationService.Application.Common.Interfaces;
 using ReservationService.Application.Common.Services;
 using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
 
 namespace ReservationService.Application.Features.Auth.Commands.Login;
 
@@ -17,7 +18,8 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
 
     public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
+        var specification = new UserSpecification(command.Email);
+        var user = await _userRepository.GetAsync(specification, cancellationToken);
 
         if (user is null)
         {
