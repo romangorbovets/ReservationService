@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using ReservationService.Domain.Common.Exceptions;
 
 namespace ReservationService.Infrastructure.Middleware;
 
@@ -34,15 +35,33 @@ public class ExceptionHandlingMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)GetStatusCode(exception);
 
-        var response = new
+        object response;
+
+        if (exception is ValidationException validationException)
         {
-            error = new
+            response = new
             {
-                message = exception.Message,
-                statusCode = context.Response.StatusCode,
-                timestamp = DateTime.UtcNow
-            }
-        };
+                error = new
+                {
+                    message = exception.Message,
+                    statusCode = context.Response.StatusCode,
+                    timestamp = DateTime.UtcNow,
+                    errors = validationException.Errors
+                }
+            };
+        }
+        else
+        {
+            response = new
+            {
+                error = new
+                {
+                    message = exception.Message,
+                    statusCode = context.Response.StatusCode,
+                    timestamp = DateTime.UtcNow
+                }
+            };
+        }
 
         var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
         {
@@ -56,6 +75,7 @@ public class ExceptionHandlingMiddleware
     {
         return exception switch
         {
+            ValidationException => HttpStatusCode.BadRequest,
             ArgumentNullException or ArgumentException => HttpStatusCode.BadRequest,
             UnauthorizedAccessException => HttpStatusCode.Unauthorized,
             KeyNotFoundException or FileNotFoundException => HttpStatusCode.NotFound,
@@ -65,4 +85,3 @@ public class ExceptionHandlingMiddleware
         };
     }
 }
-

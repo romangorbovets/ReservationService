@@ -69,7 +69,7 @@ public class RequestLoggingMiddleware
         var bodyAsText = await reader.ReadToEndAsync();
         request.Body.Position = 0;
 
-        // Ограничиваем размер логируемого тела запроса
+        
         return bodyAsText.Length > 1000 
             ? bodyAsText[..1000] + "... (truncated)" 
             : bodyAsText;
@@ -81,10 +81,9 @@ public class RequestLoggingMiddleware
         var text = await new StreamReader(response.Body).ReadToEndAsync();
         response.Body.Seek(0, SeekOrigin.Begin);
         
-        // Ограничиваем размер логируемого тела ответа
+        
         return text.Length > 1000 
             ? text[..1000] + "... (truncated)" 
             : text;
     }
 }
-

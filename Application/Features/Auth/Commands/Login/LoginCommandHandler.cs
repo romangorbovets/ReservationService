@@ -1,0 +1,39 @@
+using ReservationService.Application.Common.Interfaces;
+using ReservationService.Application.Common.Services;
+using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
+
+namespace ReservationService.Application.Features.Auth.Commands.Login;
+
+public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
+{
+    private readonly IUserRepository _userRepository;
+    private readonly IJwtTokenService _jwtTokenService;
+
+    public LoginCommandHandler(IUserRepository userRepository, IJwtTokenService jwtTokenService)
+    {
+        _userRepository = userRepository;
+        _jwtTokenService = jwtTokenService;
+    }
+
+    public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken = default)
+    {
+        var specification = new UserSpecification(command.Email);
+        var user = await _userRepository.GetAsync(specification, cancellationToken);
+
+        if (user is null)
+        {
+            throw new UnauthorizedAccessException("Invalid email or password");
+        }
+
+        var passwordHash = PasswordHasher.HashPassword(command.Password);
+        if (user.PasswordHash != passwordHash)
+        {
+            throw new UnauthorizedAccessException("Invalid email or password");
+        }
+
+        var token = _jwtTokenService.GenerateToken(user.Id, user.Email, user.Role);
+
+        return new LoginResponse(token, user.Id, user.Email);
+    }
+}
