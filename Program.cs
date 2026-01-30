@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using ReservationService.Application;
 using ReservationService.Application.Common.Behaviors;
 using ReservationService.Application.Common.Settings;
+using ReservationService.Infrastructure.Middleware;
 using ReservationService.Persistence;
 using System.Reflection;
 
@@ -66,10 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseMiddleware<ReservationService.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
-
-
-app.UseMiddleware<ReservationService.Infrastructure.Middleware.RequestLoggingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseHttpsRedirection();
 
