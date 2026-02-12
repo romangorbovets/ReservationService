@@ -1,16 +1,119 @@
 @ReservationService_HostAddress = http://localhost:5129
+@CustomerId = 942a0cdb-a328-481f-98c2-daf4587c1d68
+@TableId = 26b9e144-5f4d-4065-b340-a8be9807bb25
+@ReservationId = dfbf323e-e914-4f77-9a7e-ed251f49a165
 
-GET {{ReservationService_HostAddress}}/weatherforecast/
+GET {{ReservationService_HostAddress}}/api/restaurants
 Accept: application/json
 
-###
+
+POST {{ReservationService_HostAddress}}/api/restaurants
+Content-Type: application/json
+
+{
+  "name": "Fine Dining Restaurant",
+  "description": "A premium restaurant with excellent cuisine",
+  "email": "restaurant.new@example.com",
+  "phoneNumber": "+1234567890",
+  "street": "456 Restaurant Avenue",
+  "city": "New York",
+  "state": "NY",
+  "postalCode": "10002",
+  "country": "USA",
+  "timeZone": "America/New_York",
+  "openingTime": "11:00:00",
+  "closingTime": "22:00:00"
+}
 
 
+POST {{ReservationService_HostAddress}}/api/customers
+Content-Type: application/json
+
+{
+  "firstName": "Johnx",
+  "lastName": "Doe",
+  "email": "johnx.doe.new@example.com",
+  "phoneNumber": "+1234567890",
+  "street": "123 Main Street",
+  "city": "New York",
+  "state": "NY",
+  "postalCode": "10001",
+  "country": "USA"
+}
 
 
+POST {{ReservationService_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user.new@example.com",
+  "password": "SecurePassword123!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
 
 
- 
+POST {{ReservationService_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user.new@example.com",
+  "password": "SecurePassword123!"
+}
 
 
+POST {{ReservationService_HostAddress}}/api/tables
+Content-Type: application/json
 
+{
+  "restaurantId": "24ee01c1-e9e7-4810-8b42-1e6c08c329dd",
+  "tableNumber": "T-01",
+  "capacity": 4,
+  "location": "Window seat"
+}
+
+
+GET {{ReservationService_HostAddress}}/api/tables
+Accept: application/json
+
+
+GET {{ReservationService_HostAddress}}/api/tables?restaurantId=00000000-0000-0000-0000-000000000003
+Accept: application/json
+
+
+GET {{ReservationService_HostAddress}}/api/reservations/availability?restaurantId=00000000-0000-0000-0000-000000000003&startTime=2026-02-15T19:00:00Z&endTime=2026-02-15T21:00:00Z&numberOfGuests=4
+Accept: application/json
+
+
+POST {{ReservationService_HostAddress}}/api/reservations
+Content-Type: application/json
+
+{
+  "customerId": "{{CustomerId}}",
+  "tableId": "{{TableId}}",
+  "restaurantId": "24ee01c1-e9e7-4810-8b42-1e6c08c329dd",
+  "startTime": "2026-12-15T19:00:00Z",
+  "endTime": "2026-12-15T21:00:00Z",
+  "numberOfGuests": 4,
+  "totalPriceAmount": 150.00,
+  "currency": "USD",
+  "autoCancellationEnabled": true,
+  "cancellationTimeout": "01:00:00",
+  "specialRequests": "Window seat please"
+}
+
+
+PUT {{ReservationService_HostAddress}}/api/reservations/{{ReservationId}}/confirm
+Content-Type: application/json
+
+
+PUT {{ReservationService_HostAddress}}/api/reservations/{{ReservationId}}/cancel
+Content-Type: application/json
+
+{
+  "cancellationReason": "Change of plans"
+}
+
+
+GET {{ReservationService_HostAddress}}/api/reservations/{{ReservationId}}
+Accept: application/json
