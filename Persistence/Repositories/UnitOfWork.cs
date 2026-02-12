@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using Microsoft.Extensions.Logging;
 using Npgsql;
+=======
+>>>>>>> main
 using ReservationService.Domain.Common.Exceptions;
 using ReservationService.Domain.Repositories;
 
@@ -9,12 +12,19 @@ namespace ReservationService.Persistence.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
     private readonly ILogger<UnitOfWork> _logger;
 
     public UnitOfWork(ApplicationDbContext context, ILogger<UnitOfWork> logger)
     {
         _context = context;
         _logger = logger;
+=======
+
+    public UnitOfWork(ApplicationDbContext context)
+    {
+        _context = context;
+>>>>>>> main
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -25,6 +35,7 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
         {
+<<<<<<< HEAD
             _logger.LogWarning(ex, "Обнаружено нарушение уникального ограничения: {Message}", ex.InnerException?.Message ?? ex.Message);
             throw new DuplicateEntityException("Duplicate entity", ex);
         }
@@ -91,6 +102,10 @@ public class UnitOfWork : IUnitOfWork
             return "Restaurant";
         
         return "related entity";
+=======
+            throw new DuplicateEntityException("Duplicate entity", ex);
+        }
+>>>>>>> main
     }
 
     private static bool IsUniqueConstraintViolation(DbUpdateException ex)

@@ -46,6 +46,7 @@ public class Reservation : AggregateRoot
         SpecialRequests = specialRequests;
         Status = ReservationStatus.Pending;
     }
+<<<<<<< HEAD
 
     public void Confirm()
     {
@@ -69,4 +70,6 @@ public class Reservation : AggregateRoot
         CancelledAt = DateTime.UtcNow;
         CancellationReason = reason;
     }
+=======
+>>>>>>> main
 }

@@ -52,6 +52,7 @@
     ]
   },
   {
+<<<<<<< HEAD
     "ContainingType": "ReservationService.Controllers.CustomersController",
     "Method": "CreateCustomer",
     "RelativePath": "api/Customers",
@@ -296,6 +297,8 @@
     ]
   },
   {
+=======
+>>>>>>> main
     "ContainingType": "ReservationService.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

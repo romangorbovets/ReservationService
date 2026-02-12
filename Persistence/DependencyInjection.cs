@@ -22,6 +22,7 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
+<<<<<<< HEAD
             var dbConfiguration = serviceProvider.GetRequiredService<IConfiguration>();
             var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
             var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
@@ -43,6 +44,11 @@ public static class DependencyInjection
             }
             
             options.UseNpgsql(connectionString)
+=======
+            var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
+            options.UseNpgsql(databaseOptions.ConnectionString)
+>>>>>>> main
                 .AddInterceptors(interceptor);
         });
 

@@ -12,6 +12,7 @@ public class ReservationSpecification : Specification<Reservation>
         _id = id;
     }
 
+<<<<<<< HEAD
     public override Expression<Func<Reservation, bool>> Criteria
     {
         get
@@ -21,4 +22,7 @@ public class ReservationSpecification : Specification<Reservation>
             return r => r.Id == id;
         }
     }
+=======
+    public override Expression<Func<Reservation, bool>> Criteria => r => r.Id == _id;
+>>>>>>> main
 }

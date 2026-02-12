@@ -30,7 +30,10 @@ public class RequestLoggingMiddleware
             context.Connection.RemoteIpAddress);
 
         var originalBodyStream = context.Response.Body;
+<<<<<<< HEAD
         var exceptionOccurred = false;
+=======
+>>>>>>> main
 
         using var responseBody = new MemoryStream();
         context.Response.Body = responseBody;
@@ -39,6 +42,7 @@ public class RequestLoggingMiddleware
         {
             await _next(context);
         }
+<<<<<<< HEAD
         catch (Exception ex)
         {
             
@@ -54,10 +58,13 @@ public class RequestLoggingMiddleware
             
             throw;
         }
+=======
+>>>>>>> main
         finally
         {
             stopwatch.Stop();
 
+<<<<<<< HEAD
             
             if (!exceptionOccurred && context.Response.Body == responseBody && !context.Response.HasStarted)
             {
@@ -94,6 +101,19 @@ public class RequestLoggingMiddleware
                     _logger.LogError(ex, "Ошибка при копировании ответа: {Message}", ex.Message);
                 }
             }
+=======
+            var responseBodyContent = await ReadResponseBodyAsync(context.Response);
+            
+            _logger.LogInformation(
+                "HTTP Response: {StatusCode} | {Method} {Path} | Elapsed: {ElapsedMilliseconds}ms | Response: {ResponseBody}",
+                context.Response.StatusCode,
+                context.Request.Method,
+                context.Request.Path,
+                stopwatch.ElapsedMilliseconds,
+                responseBodyContent);
+
+            await responseBody.CopyToAsync(originalBodyStream);
+>>>>>>> main
         }
     }
 

@@ -1,4 +1,5 @@
 @ReservationService_HostAddress = http://localhost:5129
+<<<<<<< HEAD
 @CustomerId = 942a0cdb-a328-481f-98c2-daf4587c1d68
 @TableId = 26b9e144-5f4d-4065-b340-a8be9807bb25
 @ReservationId = dfbf323e-e914-4f77-9a7e-ed251f49a165
@@ -117,3 +118,10 @@ Content-Type: application/json
 
 GET {{ReservationService_HostAddress}}/api/reservations/{{ReservationId}}
 Accept: application/json
+=======
+
+GET {{ReservationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+>>>>>>> main

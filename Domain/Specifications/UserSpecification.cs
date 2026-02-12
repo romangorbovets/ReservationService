@@ -12,6 +12,7 @@ public class UserSpecification : Specification<User>
         _email = email ?? throw new ArgumentNullException(nameof(email));
     }
 
+<<<<<<< HEAD
     public override Expression<Func<User, bool>> Criteria
     {
         get
@@ -21,4 +22,7 @@ public class UserSpecification : Specification<User>
             return u => u.Email == email;
         }
     }
+=======
+    public override Expression<Func<User, bool>> Criteria => u => u.Email == _email;
+>>>>>>> main
 }

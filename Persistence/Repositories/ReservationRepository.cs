@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using Npgsql;
+=======
+>>>>>>> main
 using ReservationService.Domain.AggregateRoots;
 using ReservationService.Domain.Repositories;
 using ReservationService.Domain.Specifications;
@@ -17,6 +20,7 @@ public class ReservationRepository : IReservationRepository
 
     public async Task<Reservation?> GetAsync(ISpecification<Reservation> specification, CancellationToken cancellationToken = default)
     {
+<<<<<<< HEAD
         if (specification is null)
         {
             throw new ArgumentNullException(nameof(specification));
@@ -45,6 +49,11 @@ public class ReservationRepository : IReservationRepository
         {
             throw new InvalidOperationException($"Error executing specification query: {ex.Message}", ex);
         }
+=======
+        return await _context.Reservations
+            .Where(specification.Criteria)
+            .FirstOrDefaultAsync(cancellationToken);
+>>>>>>> main
     }
 
     public async Task<Reservation> AddAsync(Reservation reservation, CancellationToken cancellationToken = default)

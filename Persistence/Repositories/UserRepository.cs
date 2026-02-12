@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using Npgsql;
+=======
+>>>>>>> main
 using ReservationService.Domain.Common.Exceptions;
 using ReservationService.Domain.Entities;
 using ReservationService.Domain.Repositories;
@@ -18,6 +21,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetAsync(ISpecification<User> specification, CancellationToken cancellationToken = default)
     {
+<<<<<<< HEAD
         if (specification is null)
         {
             throw new ArgumentNullException(nameof(specification));
@@ -46,6 +50,11 @@ public class UserRepository : IUserRepository
         {
             throw new InvalidOperationException($"Error executing specification query: {ex.Message}", ex);
         }
+=======
+        return await _context.Users
+            .Where(specification.Criteria)
+            .FirstOrDefaultAsync(cancellationToken);
+>>>>>>> main
     }
 
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken = default)

@@ -1,8 +1,11 @@
 using System.Net;
 using System.Text.Json;
+<<<<<<< HEAD
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+=======
+>>>>>>> main
 using ReservationService.Domain.Common.Exceptions;
 
 namespace ReservationService.Infrastructure.Middleware;
@@ -28,6 +31,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
+<<<<<<< HEAD
             var statusCode = GetStatusCode(ex);
             var logLevel = statusCode == System.Net.HttpStatusCode.NotFound 
                 ? LogLevel.Information 
@@ -75,24 +79,44 @@ public class ExceptionHandlingMiddleware
         _logger.LogWarning("GetStatusCode вернул: {HttpStatusCode} ({StatusCode}). Тип исключения: {ExceptionType}", 
             httpStatusCode, statusCode, exception.GetType().Name);
         
+=======
+            _logger.LogError(ex, "Произошла необработанная ошибка: {Message}", ex.Message);
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)GetStatusCode(exception);
+
+>>>>>>> main
         object response;
 
         if (exception is ValidationException validationException)
         {
+<<<<<<< HEAD
             _logger.LogInformation("Обработка ValidationException с {ErrorCount} ошибками валидации", 
                 validationException.Errors.Count);
             
+=======
+>>>>>>> main
             response = new
             {
                 error = new
                 {
                     message = exception.Message,
+<<<<<<< HEAD
                     statusCode = statusCode,
+=======
+                    statusCode = context.Response.StatusCode,
+>>>>>>> main
                     timestamp = DateTime.UtcNow,
                     errors = validationException.Errors
                 }
             };
         }
+<<<<<<< HEAD
         else if (exception is DbUpdateException dbUpdateException)
         {
             var innerException = dbUpdateException.InnerException;
@@ -162,6 +186,8 @@ public class ExceptionHandlingMiddleware
                 }
             };
         }
+=======
+>>>>>>> main
         else
         {
             response = new
@@ -169,7 +195,11 @@ public class ExceptionHandlingMiddleware
                 error = new
                 {
                     message = exception.Message,
+<<<<<<< HEAD
                     statusCode = statusCode,
+=======
+                    statusCode = context.Response.StatusCode,
+>>>>>>> main
                     timestamp = DateTime.UtcNow
                 }
             };
@@ -180,6 +210,7 @@ public class ExceptionHandlingMiddleware
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         });
 
+<<<<<<< HEAD
         try
         {
             
@@ -213,10 +244,14 @@ public class ExceptionHandlingMiddleware
                 }
             }
         }
+=======
+        await context.Response.WriteAsync(jsonResponse);
+>>>>>>> main
     }
 
     private static HttpStatusCode GetStatusCode(Exception exception)
     {
+<<<<<<< HEAD
         
         if (exception is KeyNotFoundException)
         {
@@ -229,14 +264,21 @@ public class ExceptionHandlingMiddleware
             return HttpStatusCode.NotFound;
         }
         
+=======
+>>>>>>> main
         return exception switch
         {
             ValidationException => HttpStatusCode.BadRequest,
             ArgumentNullException or ArgumentException => HttpStatusCode.BadRequest,
             UnauthorizedAccessException => HttpStatusCode.Unauthorized,
+<<<<<<< HEAD
             FileNotFoundException => HttpStatusCode.NotFound,
             DuplicateEntityException => HttpStatusCode.Conflict,
             InvalidOperationException => HttpStatusCode.InternalServerError,
+=======
+            KeyNotFoundException or FileNotFoundException => HttpStatusCode.NotFound,
+            InvalidOperationException => HttpStatusCode.Conflict,
+>>>>>>> main
             NotSupportedException => HttpStatusCode.MethodNotAllowed,
             _ => HttpStatusCode.InternalServerError
         };
