@@ -3,6 +3,7 @@ using ReservationService.Application.Common.Services;
 using ReservationService.Domain.Common.Exceptions;
 using ReservationService.Domain.Entities;
 using ReservationService.Domain.Repositories;
+using ReservationService.Domain.Specifications;
 
 namespace ReservationService.Application.Features.Auth.Commands.Register;
 
@@ -19,6 +20,14 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterR
 
     public async Task<RegisterResponse> Handle(RegisterCommand command, CancellationToken cancellationToken = default)
     {
+        var specification = new UserSpecification(command.Email);
+        var existingUser = await _userRepository.GetAsync(specification, cancellationToken);
+
+        if (existingUser is not null)
+        {
+            throw new DuplicateEntityException($"User with email '{command.Email}' already exists");
+        }
+
         var user = new User
         {
             Email = command.Email,
@@ -27,15 +36,8 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterR
             LastName = command.LastName
         };
 
-        try
-        {
-            await _userRepository.AddAsync(user, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-        catch (DuplicateEntityException)
-        {
-            throw new InvalidOperationException("Registration failed");
-        }
+        await _userRepository.AddAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RegisterResponse("User registered successfully");
     }

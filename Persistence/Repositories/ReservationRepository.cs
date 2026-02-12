@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+using Npgsql;
+=======
+>>>>>>> main
 using ReservationService.Domain.AggregateRoots;
 using ReservationService.Domain.Repositories;
 using ReservationService.Domain.Specifications;
@@ -16,9 +20,40 @@ public class ReservationRepository : IReservationRepository
 
     public async Task<Reservation?> GetAsync(ISpecification<Reservation> specification, CancellationToken cancellationToken = default)
     {
+<<<<<<< HEAD
+        if (specification is null)
+        {
+            throw new ArgumentNullException(nameof(specification));
+        }
+
+        if (specification.Criteria is null)
+        {
+            throw new ArgumentException("Specification criteria cannot be null", nameof(specification));
+        }
+
+        try
+        {
+            return await _context.Reservations
+                .Where(specification.Criteria)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+        {
+            throw new InvalidOperationException($"Database error: {dbEx.Message}", dbEx);
+        }
+        catch (Npgsql.NpgsqlException npgsqlEx)
+        {
+            throw new InvalidOperationException($"PostgreSQL connection error: {npgsqlEx.Message}. Please check your database connection settings.", npgsqlEx);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Error executing specification query: {ex.Message}", ex);
+        }
+=======
         return await _context.Reservations
             .Where(specification.Criteria)
             .FirstOrDefaultAsync(cancellationToken);
+>>>>>>> main
     }
 
     public async Task<Reservation> AddAsync(Reservation reservation, CancellationToken cancellationToken = default)

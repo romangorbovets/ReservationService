@@ -12,5 +12,17 @@ public class UserSpecification : Specification<User>
         _email = email ?? throw new ArgumentNullException(nameof(email));
     }
 
+<<<<<<< HEAD
+    public override Expression<Func<User, bool>> Criteria
+    {
+        get
+        {
+            
+            var email = _email;
+            return u => u.Email == email;
+        }
+    }
+=======
     public override Expression<Func<User, bool>> Criteria => u => u.Email == _email;
+>>>>>>> main
 }

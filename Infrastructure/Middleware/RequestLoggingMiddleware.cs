@@ -30,6 +30,10 @@ public class RequestLoggingMiddleware
             context.Connection.RemoteIpAddress);
 
         var originalBodyStream = context.Response.Body;
+<<<<<<< HEAD
+        var exceptionOccurred = false;
+=======
+>>>>>>> main
 
         using var responseBody = new MemoryStream();
         context.Response.Body = responseBody;
@@ -38,10 +42,66 @@ public class RequestLoggingMiddleware
         {
             await _next(context);
         }
+<<<<<<< HEAD
+        catch (Exception ex)
+        {
+            
+            exceptionOccurred = true;
+            
+            
+            context.Response.Body = originalBodyStream;
+            
+            
+            _logger.LogError(ex, "Исключение при обработке запроса: {Method} {Path}", 
+                context.Request.Method, context.Request.Path);
+            
+            
+            throw;
+        }
+=======
+>>>>>>> main
         finally
         {
             stopwatch.Stop();
 
+<<<<<<< HEAD
+            
+            if (!exceptionOccurred && context.Response.Body == responseBody && !context.Response.HasStarted)
+            {
+                try
+                {
+                    var responseBodyContent = await ReadResponseBodyAsync(context.Response);
+                    
+                    _logger.LogInformation(
+                        "HTTP Response: {StatusCode} | {Method} {Path} | Elapsed: {ElapsedMilliseconds}ms | Response: {ResponseBody}",
+                        context.Response.StatusCode,
+                        context.Request.Method,
+                        context.Request.Path,
+                        stopwatch.ElapsedMilliseconds,
+                        responseBodyContent);
+
+                    responseBody.Position = 0;
+                    await responseBody.CopyToAsync(originalBodyStream);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Ошибка при копировании ответа: {Message}", ex.Message);
+                }
+            }
+            else if (!exceptionOccurred && context.Response.Body == responseBody)
+            {
+                
+                try
+                {
+                    responseBody.Position = 0;
+                    await responseBody.CopyToAsync(originalBodyStream);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Ошибка при копировании ответа: {Message}", ex.Message);
+                }
+            }
+=======
             var responseBodyContent = await ReadResponseBodyAsync(context.Response);
             
             _logger.LogInformation(
@@ -53,6 +113,7 @@ public class RequestLoggingMiddleware
                 responseBodyContent);
 
             await responseBody.CopyToAsync(originalBodyStream);
+>>>>>>> main
         }
     }
 

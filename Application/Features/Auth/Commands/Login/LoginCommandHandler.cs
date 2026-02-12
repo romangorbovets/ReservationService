@@ -26,8 +26,7 @@ public class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
             throw new UnauthorizedAccessException("Invalid email or password");
         }
 
-        var passwordHash = PasswordHasher.HashPassword(command.Password);
-        if (user.PasswordHash != passwordHash)
+        if (!PasswordHasher.VerifyPassword(command.Password, user.PasswordHash))
         {
             throw new UnauthorizedAccessException("Invalid email or password");
         }

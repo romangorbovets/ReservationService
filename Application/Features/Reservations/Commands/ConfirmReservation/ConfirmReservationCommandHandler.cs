@@ -24,9 +24,10 @@ public class ConfirmReservationCommandHandler : ICommandHandler<ConfirmReservati
 
         if (reservation is null)
         {
-            throw new InvalidOperationException("Reservation not found");
+            throw new KeyNotFoundException($"Reservation with id '{command.ReservationId}' not found.");
         }
 
+        reservation.Confirm();
         await _reservationRepository.UpdateAsync(reservation, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }

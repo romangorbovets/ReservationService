@@ -184,10 +184,17 @@ C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\staticwebassets.development.json
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\swae.build.ex.cache
+<<<<<<< HEAD
+=======
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+>>>>>>> main
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\Reservat.9A8E0B66.Up2Date
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\ReservationService.dll
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\refint\ReservationService.dll
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\ReservationService.pdb
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\ReservationService.genruntimeconfig.cache
 C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\ref\ReservationService.dll
+<<<<<<< HEAD
+C:\Users\user\source\repos\ReservationService\ReservationService\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+=======
+>>>>>>> main

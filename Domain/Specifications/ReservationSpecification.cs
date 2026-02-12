@@ -12,5 +12,17 @@ public class ReservationSpecification : Specification<Reservation>
         _id = id;
     }
 
+<<<<<<< HEAD
+    public override Expression<Func<Reservation, bool>> Criteria
+    {
+        get
+        {
+           
+            var id = _id;
+            return r => r.Id == id;
+        }
+    }
+=======
     public override Expression<Func<Reservation, bool>> Criteria => r => r.Id == _id;
+>>>>>>> main
 }

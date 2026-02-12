@@ -46,4 +46,30 @@ public class Reservation : AggregateRoot
         SpecialRequests = specialRequests;
         Status = ReservationStatus.Pending;
     }
+<<<<<<< HEAD
+
+    public void Confirm()
+    {
+        if (Status != ReservationStatus.Pending)
+        {
+            throw new InvalidOperationException($"Cannot confirm reservation with status {Status}");
+        }
+
+        Status = ReservationStatus.Confirmed;
+        ConfirmedAt = DateTime.UtcNow;
+    }
+
+    public void Cancel(string? reason = null)
+    {
+        if (Status == ReservationStatus.Cancelled || Status == ReservationStatus.Completed)
+        {
+            throw new InvalidOperationException($"Cannot cancel reservation with status {Status}");
+        }
+
+        Status = ReservationStatus.Cancelled;
+        CancelledAt = DateTime.UtcNow;
+        CancellationReason = reason;
+    }
+=======
+>>>>>>> main
 }

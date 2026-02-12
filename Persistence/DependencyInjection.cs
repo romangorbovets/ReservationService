@@ -22,9 +22,33 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
+<<<<<<< HEAD
+            var dbConfiguration = serviceProvider.GetRequiredService<IConfiguration>();
+            var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
+            
+            
+            var connectionString = dbConfiguration.GetConnectionString("DefaultConnection") 
+                ?? databaseOptions.ConnectionString;
+            
+            
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                var host = dbConfiguration["DatabaseOptions:Host"] ?? "localhost";
+                var port = dbConfiguration["DatabaseOptions:Port"] ?? "5432";
+                var database = dbConfiguration["DatabaseOptions:Database"] ?? "ReservationService";
+                var username = dbConfiguration["DatabaseOptions:Username"] ?? "postgres";
+                var password = dbConfiguration["DatabaseOptions:Password"] ?? "postgres";
+                
+                connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Disable";
+            }
+            
+            options.UseNpgsql(connectionString)
+=======
             var databaseOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
             var interceptor = serviceProvider.GetRequiredService<UpdateTimestampsInterceptor>();
             options.UseNpgsql(databaseOptions.ConnectionString)
+>>>>>>> main
                 .AddInterceptors(interceptor);
         });
 

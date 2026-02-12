@@ -18,6 +18,19 @@ builder.Services.AddOpenApi();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
+<<<<<<< HEAD
+
+builder.Services.AddMediatR(cfg => 
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    cfg.RegisterServicesFromAssembly(typeof(ReservationService.Application.DependencyInjection).Assembly);
+});
+
+
+builder.Services.RegisterCommandAdapters();
+
+=======
+>>>>>>> main
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 if (jwtSettings is null)
 {
@@ -46,6 +59,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 
+<<<<<<< HEAD
+builder.Services.AddValidatorsFromAssembly(typeof(ReservationService.Application.DependencyInjection).Assembly, includeInternalTypes: true);
+=======
 builder.Services.AddMediatR(cfg => 
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -54,6 +70,7 @@ builder.Services.AddMediatR(cfg =>
 
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+>>>>>>> main
 
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -66,7 +83,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
